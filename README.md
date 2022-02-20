@@ -5,7 +5,7 @@ By default, it uses the name fo the satellite that you specify, and prints the n
 three predicted passes as viewed from San Francisco.  It's fairly straightforward,
 and so could be easily modified.
 
-{{{
+```
 markv@legion:~$ python satellite NORBI FEES 
 NORBI
 +---------------------+----------+---------------------+----------+---------------------+---------+
@@ -23,4 +23,4 @@ FEES
 | 02/19/2022 23:31:41 |    8.4   | 02/19/2022 23:37:48 |   66.2   | 02/19/2022 23:43:50 |  199.3  |
 | 02/20/2022 01:08:05 |  334.0   | 02/20/2022 01:11:29 |    3.8   | 02/20/2022 01:14:52 |  265.3  |
 +---------------------+----------+---------------------+----------+---------------------+---------+
-}}}
+```
