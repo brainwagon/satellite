@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+
+import argparse
+import math
+import ephem
+from prettytable import PrettyTable as pt
+from datetime import datetime
+import urllib.request
+
+#url = "https://celestrak.com/NORAD/elements/gp.php?NAME=Norbi"
+
+def dt(f):
+  return f.strftime("%m/%d/%Y %H:%M:%S")
+
+def do_pass(name):
+  url = "https://celestrak.com/NORAD/elements/gp.php?NAME={}".format(name)
+  with urllib.request.urlopen(url) as response:
+    data = response.read().decode("utf-8")
+  sat = ephem.readtle(*data.split('\r\n')[:3])
+  obs = ephem.city("San Francisco")
+  tb = pt()
+  print(name)
+  tb.field_names = ["Rise Time", "Rise Azi", "Transit Time", "Altitude", "Set Time", "Set Azi"]
+  for i in range(3):
+    info = obs.next_pass(sat)
+    tb.add_row([dt(ephem.localtime(info[0])), 
+              "{:5.1f}".format(math.degrees(info[1])),
+              dt(ephem.localtime(info[2])),
+              "{:5.1f}".format(math.degrees(info[3])),
+              dt(ephem.localtime(info[4])),
+              "{:5.1f}".format(math.degrees(info[5]))])
+    obs.date = info[4] + ephem.minute
+  print(tb)
+
+p = argparse.ArgumentParser()
+p.add_argument("SAT", nargs="*", default=["NORBI"], help="name off satellite")
+args = p.parse_args()
+
+for sat in args.SAT:
+  do_pass(sat)
